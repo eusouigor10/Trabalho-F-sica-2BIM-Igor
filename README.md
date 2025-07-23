@@ -5,7 +5,5 @@
 
 ## Explicação do código e funcionalidades:
   O programa de resolução desse exercício permite que sejam calculados o valor do campo magnético produzido pela corrente nessa linha, a porcentagem de influência desse campo na leitura da bússola (considerando o valor do campo magnético da Terra) e o nível dessa influência, seja baixo, médio ou alto. O exercício propõe valores fixos de corrente e distância, já o programa generaliza possibilitando qualquer valor em um intervalo bem maior de dados. As fórmulas utilizadas são a do campo magnético e de porcentagem. A tecnologia utilizada é a biblioteca Swing, do Java.
-
-  foto segundo trabalho.png
   
 
