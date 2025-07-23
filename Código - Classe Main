@@ -1,0 +1,8 @@
+package igorigor.trabalhofisica2bim;
+
+public class TrabalhoFisica2Bim {
+
+    public static void main(String[] args) {
+        TelaPrincipal tela = new TelaPrincipal();
+    }
+}
