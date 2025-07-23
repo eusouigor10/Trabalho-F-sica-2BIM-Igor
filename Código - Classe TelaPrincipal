@@ -1,0 +1,148 @@
+package igorigor.trabalhofisica2bim;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+public class TelaPrincipal extends JFrame {
+
+    private JPanel painelInput, painelOutput;
+    private JLabel labelCorrente, labelDistancia, labelCampo, labelPorcentagem, labelInfluencia;
+    private JTextArea areaValorCorrente;
+    private JTextField campoDistancia;
+    private JButton botaoCalcular;
+    private double valorCorrente;
+    private double distanciaBussola;
+    private double resultado;
+    private double influencia;
+
+    public TelaPrincipal() {
+        setTitle("Calculadora de Campo Magnético");
+        setSize(800, 500);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        setLayout(new BorderLayout());
+
+        painelInput = new JPanel();
+        painelInput.setLayout(new BoxLayout(painelInput, BoxLayout.Y_AXIS));
+        painelInput.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        labelCorrente = new JLabel("Insira o valor da corrente elétrica (A): ");
+        labelDistancia = new JLabel("Insira a distância da linha à bússola (m): ");
+
+        areaValorCorrente = new JTextArea(1, 15); 
+        areaValorCorrente.setLineWrap(true);
+        areaValorCorrente.setWrapStyleWord(true);
+        JScrollPane scrollCorrente = new JScrollPane(areaValorCorrente);
+
+        Dimension preferredSizeTextArea = areaValorCorrente.getPreferredSize();
+        scrollCorrente.setMaximumSize(new Dimension(preferredSizeTextArea.width + 10, preferredSizeTextArea.height + 10)); 
+
+        campoDistancia = new JTextField(15);
+        
+        Dimension preferredSizeTextField = campoDistancia.getPreferredSize();
+        campoDistancia.setMaximumSize(new Dimension(preferredSizeTextField.width + 10, preferredSizeTextField.height));
+
+
+        botaoCalcular = new JButton("CALCULAR");
+
+        labelCorrente.setAlignmentX(Component.CENTER_ALIGNMENT);
+        scrollCorrente.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelDistancia.setAlignmentX(Component.CENTER_ALIGNMENT);
+        campoDistancia.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botaoCalcular.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        painelInput.add(Box.createVerticalGlue());
+        painelInput.add(labelCorrente);
+        painelInput.add(Box.createVerticalStrut(5));
+        painelInput.add(scrollCorrente); 
+        painelInput.add(Box.createVerticalStrut(10));
+        painelInput.add(labelDistancia);
+        painelInput.add(Box.createVerticalStrut(5));
+        painelInput.add(campoDistancia);
+        painelInput.add(Box.createVerticalStrut(20));
+        painelInput.add(botaoCalcular);
+        painelInput.add(Box.createVerticalGlue());
+
+        painelOutput = new JPanel();
+        painelOutput.setLayout(new BoxLayout(painelOutput, BoxLayout.Y_AXIS));
+        painelOutput.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        labelCampo = new JLabel("Valor do campo magnético produzido (T): [RESULTADO]");
+        labelPorcentagem = new JLabel("Porcentagem de influência na leitura da bússola (%): [RESULTADO]");
+        labelInfluencia = new JLabel("Influência do campo gerado na leitura da bússola: [RESULTADO]");
+
+        labelCampo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelPorcentagem.setAlignmentX(Component.CENTER_ALIGNMENT);
+        labelInfluencia.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        painelOutput.add(Box.createVerticalGlue());
+        painelOutput.add(labelCampo);
+        painelOutput.add(Box.createVerticalStrut(15));
+        painelOutput.add(labelPorcentagem);
+        painelOutput.add(Box.createVerticalStrut(15));
+        painelOutput.add(labelInfluencia);
+        painelOutput.add(Box.createVerticalGlue());
+
+        JPanel mainContentPanel = new JPanel();
+        mainContentPanel.setLayout(new GridLayout(1, 2));
+        mainContentPanel.add(painelInput);
+        mainContentPanel.add(painelOutput);
+
+        add(mainContentPanel, BorderLayout.CENTER);
+
+        painelInput.setBorder(BorderFactory.createTitledBorder("Entrada de Dados"));
+        painelOutput.setBorder(BorderFactory.createTitledBorder("Resultados"));
+        
+        botaoCalcular.setActionCommand("Calcular");
+        
+        ActionListener actionListener = new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getActionCommand().equals("Calcular")){
+                    try{
+                        valorCorrente = Double.parseDouble(areaValorCorrente.getText());
+                        if(valorCorrente <= 0 || valorCorrente >= 5000){
+                            JOptionPane.showMessageDialog(null, "A corrente deve ser maior que 0 e menor que 5000.");
+                            return;
+                        }
+                        
+                        distanciaBussola = Double.parseDouble(campoDistancia.getText());
+                        if(distanciaBussola <= 0 || distanciaBussola >= 1000){
+                            JOptionPane.showMessageDialog(null, "A distância deve ser maior que 0 e menor que 1 km.");
+                            return;
+                        }
+                        
+                        resultado = (4 * Math.PI * Math.pow(10, (-7)) * valorCorrente) / (2 * Math.PI * distanciaBussola);
+                        
+                        labelCampo.setText("Valor do campo magnético produzido (microT): " + String.format("%.2f", resultado * Math.pow(10, 6)));
+                        
+                        influencia = (resultado * Math.pow(10, 6) / 20.0) * 100;
+                        
+                        labelPorcentagem.setText("Porcentagem de influência na leitura da bússola (%): " + String.format("%.2f", influencia));
+                        
+                        if(influencia < 1){
+                            labelInfluencia.setText("Influência do campo gerado na leitura da bússola: BAIXA");
+                        }else if(influencia >= 1 && influencia < 20){
+                            labelInfluencia.setText("Influência do campo gerado na leitura da bússola: MÉDIA");
+                        }else{
+                            labelInfluencia.setText("Influência do campo gerado na leitura da bússola: ALTA");
+                        }
+                        
+                    }catch(NumberFormatException e1){
+                        JOptionPane.showMessageDialog(null, "Insira um valor válido.");
+                        return;
+                    }
+                }
+            }
+            
+        };
+        
+        botaoCalcular.addActionListener(actionListener);
+
+        setVisible(true);
+    }
+
+}
