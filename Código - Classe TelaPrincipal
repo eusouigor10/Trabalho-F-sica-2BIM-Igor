@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class TelaPrincipal extends JFrame {
 
+    //Declaração daa variáveis utilizadas
     private JPanel painelInput, painelOutput;
     private JLabel labelCorrente, labelDistancia, labelCampo, labelPorcentagem, labelInfluencia;
     private JTextArea areaValorCorrente;
@@ -18,13 +19,15 @@ public class TelaPrincipal extends JFrame {
     private double influencia;
 
     public TelaPrincipal() {
+        //Inicialização da tela
         setTitle("Calculadora de Campo Magnético");
         setSize(800, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
-
+        
+        //Inicialização dos paineis
         painelInput = new JPanel();
         painelInput.setLayout(new BoxLayout(painelInput, BoxLayout.Y_AXIS));
         painelInput.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -48,6 +51,7 @@ public class TelaPrincipal extends JFrame {
 
         botaoCalcular = new JButton("CALCULAR");
 
+        //Alinhamento dentro dos paineis
         labelCorrente.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollCorrente.setAlignmentX(Component.CENTER_ALIGNMENT);
         labelDistancia.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -70,6 +74,7 @@ public class TelaPrincipal extends JFrame {
         painelOutput.setLayout(new BoxLayout(painelOutput, BoxLayout.Y_AXIS));
         painelOutput.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        //Labels de resultados
         labelCampo = new JLabel("Valor do campo magnético produzido (T): [RESULTADO]");
         labelPorcentagem = new JLabel("Porcentagem de influência na leitura da bússola (%): [RESULTADO]");
         labelInfluencia = new JLabel("Influência do campo gerado na leitura da bússola: [RESULTADO]");
@@ -98,6 +103,7 @@ public class TelaPrincipal extends JFrame {
         
         botaoCalcular.setActionCommand("Calcular");
         
+        //Criação do ActionListener para pegar os dados inseridos
         ActionListener actionListener = new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,4 +151,4 @@ public class TelaPrincipal extends JFrame {
         setVisible(true);
     }
 
-}
+} 
